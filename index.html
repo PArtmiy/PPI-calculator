@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPI калькулятор — расчет плотности пикселей экрана</title>
+    <meta name="description" content="Калькулятор PPI (пикселей на дюйм) с подробными объяснениями и рекомендациями для смартфонов, мониторов и телевизоров.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0b0;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #f7971e;
+            box-shadow: 0 0 20px rgba(247, 151, 30, 0.3);
+        }
+
+        .result-box {
+            background: rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ppi-number {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #f7971e, #ffd200);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .desc-text {
+            font-size: 1.4rem;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .visual-comparison {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .pixel-block {
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .pixel-dot {
+            width: 12px;
+            height: 12px;
+            background: white;
+            margin: 1px;
+            opacity: 0.8;
+            border-radius: 2px;
+        }
+
+        .explanation-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 25px;
+            border-left: 4px solid #f7971e;
+        }
+
+        .explanation-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .reco-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .reco-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .reco-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffd200;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            border: none;
+            border-radius: 16px;
+            color: #000;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(247, 151, 30, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PPI Калькулятор</h1>
+        <p class="subtitle">Плотность пикселей и почему это важно для ваших глаз</p>
+
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Ширина (px)</label>
+                <input type="number" id="resWidth" placeholder="1920" value="1920">
+            </div>
+            <div class="input-group">
+                <label>Высота (px)</label>
+                <input type="number" id="resHeight" placeholder="1080" value="1080">
+            </div>
+            <div class="input-group">
+                <label>Диагональ (дюймы)</label>
+                <input type="number" id="diag" placeholder="5.5" value="6.1" step="0.1">
+            </div>
+        </div>
+
+        <button onclick="calculatePPI()">Рассчитать</button>
+
+        <div id="results" style="display: none;">
+            <div class="result-box">
+                <div class="ppi-number" id="ppiValue">00</div>
+                <div class="desc-text" id="ppiDesc">PPI</div>
+                <div style="margin-top: 15px; opacity: 0.7;" id="categoryBadge"></div>
+            </div>
+
+            <div class="visual-comparison">
+                <div>
+                    <small style="display:block; text-align:center; margin-bottom:5px;">Низкая плотность</small>
+                    <div class="pixel-block" id="lowDensityVis" style="width:60px;"></div>
+                </div>
+                <div style="font-size: 1.5rem; color: #f7971e;">&rarr;</div>
+                <div>
+                    <small style="display:block; text-align:center; margin-bottom:5px;">Ваш экран</small>
+                    <div class="pixel-block" id="yourDensityVis" style="width:60px;"></div>
+                </div>
+                <div style="font-size: 1.5rem; color: #f7971e;">&rarr;</div>
+                <div>
+                    <small style="display:block; text-align:center; margin-bottom:5px;">Retina идеал</small>
+                    <div class="pixel-block" id="retinaVis" style="width:60px;"></div>
+                </div>
+            </div>
+
+            <div class="explanation-card">
+                <h3>Почему именно такой PPI?</h3>
+                <p id="explanationText"></p>
+            </div>
+
+            <div class="recommendation-grid">
+                <div class="reco-item">
+                    <span class="reco-label">Для смартфона</span>
+                    <div class="reco-value" id="recoPhone">-</div>
+                </div>
+                <div class="reco-item">
+                    <span class="reco-label">Для монитора</span>
+                    <div class="reco-value" id="recoMonitor">-</div>
+                </div>
+                <div class="reco-item">
+                    <span class="reco-label">Для телевизора</span>
+                    <div class="reco-value" id="recoTV">-</div>
+                </div>
+                <div class="reco-item">
+                    <span class="reco-label">VR шлем</span>
+                    <div class="reco-value" id="recoVR">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePPI() {
+            const width = parseFloat(document.getElementById('resWidth').value) || 1920;
+            const height = parseFloat(document.getElementById('resHeight').value) || 1080;
+            const diagonal = parseFloat(document.getElementById('diag').value) || 5.5;
+
+            const diagonalPixels = Math.sqrt(width * width + height * height);
+            const ppi = Math.round(diagonalPixels / diagonal);
+
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('ppiValue').textContent = ppi;
+
+            let category, explanation;
+            
+            if (ppi < 150) {
+                category = "Низкая плотность (LDPI)";
+                explanation = "Пиксели заметны невооруженным глазом, текст выглядит рыхлым, изображения теряют четкость. Допустимо только для больших телевизоров от 50 дюймов, где зритель сидит далеко от экрана.";
+            } else if (ppi >= 150 && ppi < 250) {
+                category = "Средняя плотность (MDPI)";
+                explanation = "Хороший баланс для бюджетных ноутбуков и старых мониторов. На расстоянии вытянутой руки пиксели почти незаметны, но при приближении сетка видна. Для смартфона этого недостаточно.";
+            } else if (ppi >= 250 && ppi < 400) {
+                category = "Высокая плотность (Retina)";
+                explanation = "Золотой стандарт. На расстоянии 25-40 см глаз перестает различать отдельные пиксели. Отличная четкость для смартфонов, планшетов и ноутбуков. Больше - не всегда лучше, растет нагрузка на батарею.";
+            } else {
+                category = "Сверхвысокая плотность (4K+)";
+                explanation = "Пиксели настолько малы, что разница с предыдущей категорией незаметна глазу, но процессор нагружается сильнее. Практический смысл имеет только для VR-шлемов с увеличивающими линзами.";
+            }
+
+            document.getElementById('ppiDesc').textContent = "ppi (" + category + ")";
+            document.getElementById('categoryBadge').textContent = category;
+            document.getElementById('explanationText').textContent = explanation;
+
+            drawVisualization(ppi);
+            updateRecommendations(ppi);
+        }
+
+        function drawVisualization(ppi) {
+            const lowDensity = document.getElementById('lowDensityVis');
+            const yourDensity = document.getElementById('yourDensityVis');
+            const retina = document.getElementById('retinaVis');
+            
+            [lowDensity, yourDensity, retina].forEach(el => el.innerHTML = '');
+            
+            const createGrid = (container, cols, rows, opacity) => {
+                const dotSize = (60 / cols - 2);
+                for (let i = 0; i < rows * cols; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('pixel-dot');
+                    dot.style.width = dotSize + 'px';
+                    dot.style.height = dotSize + 'px';
+                    dot.style.opacity = opacity;
+                    container.appendChild(dot);
+                }
+            };
+
+            createGrid(lowDensity, 4, 4, 0.9);
+            const yourCols = ppi < 200 ? 6 : (ppi < 400 ? 10 : 14);
+            createGrid(yourDensity, yourCols, yourCols, 0.8);
+            createGrid(retina, 12, 12, 0.5);
+        }
+
+        function updateRecommendations(ppi) {
+            const setReco = (id, min, max) => {
+                let verdict;
+                if (ppi < min) verdict = "Недостаточно";
+                else if (ppi > max) verdict = "Избыточно";
+                else verdict = "Оптимально";
+                document.getElementById(id).textContent = verdict + " (" + min + "-" + max + " ppi)";
+            };
+
+            setReco('recoPhone', 300, 500);
+            setReco('recoMonitor', 90, 160);
+            setReco('recoTV', 50, 120);
+            setReco('recoVR', 600, 1000);
+        }
+
+        window.onload = calculatePPI;
+    </script>
+</body>
+</html>
