@@ -113,10 +113,11 @@
             line-height: 1;
         }
 
-        .desc-text {
+        .ppi-label {
             font-size: 1.4rem;
-            margin-top: 10px;
+            margin-top: 5px;
             font-weight: 500;
+            color: #a0a0b0;
         }
 
         .visual-comparison {
@@ -155,6 +156,12 @@
         .explanation-card h3 {
             margin-bottom: 15px;
             font-size: 1.3rem;
+            color: #ffd200;
+        }
+
+        .explanation-card p {
+            line-height: 1.7;
+            color: #ccc;
         }
 
         .recommendation-grid {
@@ -209,13 +216,16 @@
             .container {
                 padding: 20px;
             }
+            .ppi-number {
+                font-size: 3.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>PPI Калькулятор</h1>
-        <p class="subtitle">Плотность пикселей и почему это важно для ваших глаз</p>
+        <p class="subtitle">Расчет плотности пикселей экрана</p>
 
         <div class="input-grid">
             <div class="input-group">
@@ -237,8 +247,7 @@
         <div id="results" style="display: none;">
             <div class="result-box">
                 <div class="ppi-number" id="ppiValue">00</div>
-                <div class="desc-text" id="ppiDesc">PPI</div>
-                <div style="margin-top: 15px; opacity: 0.7;" id="categoryBadge"></div>
+                <div class="ppi-label">ppi</div>
             </div>
 
             <div class="visual-comparison">
@@ -253,14 +262,16 @@
                 </div>
                 <div style="font-size: 1.5rem; color: #f7971e;">&rarr;</div>
                 <div>
-                    <small style="display:block; text-align:center; margin-bottom:5px;">Retina идеал</small>
+                    <small style="display:block; text-align:center; margin-bottom:5px;">Высокая плотность</small>
                     <div class="pixel-block" id="retinaVis" style="width:60px;"></div>
                 </div>
             </div>
 
             <div class="explanation-card">
-                <h3>Почему именно такой PPI?</h3>
-                <p id="explanationText"></p>
+                <h3>Что такое PPI и почему это важно</h3>
+                <p>PPI (Pixels Per Inch) — это количество пикселей на дюйм экрана. Чем выше этот показатель, тем более четким и гладким выглядит изображение. При низком PPI отдельные пиксели можно заметить невооруженным глазом — текст выглядит рыхлым, а края объектов приобретают ступенчатый эффект.</p>
+                <p style="margin-top: 12px;">Это один из ключевых параметров при выборе экрана, наряду с разрешением и диагональю. Однако важно понимать: высокий PPI не всегда означает лучшее качество. Человеческий глаз имеет предел восприятия — около 300 ppi на расстоянии 30 см. Все, что выше этого порога, практически неразличимо, но требует больше ресурсов от процессора и батареи устройства.</p>
+                <p style="margin-top: 12px;">Оптимальный PPI зависит от типа устройства и расстояния, с которого вы на него смотрите. Для смартфона, который держат близко к лицу, нужно около 300-450 ppi. Для монитора на рабочем столе достаточно 100-160 ppi. Для телевизора, на который смотрят с дивана, хватит и 50-100 ppi.</p>
             </div>
 
             <div class="recommendation-grid">
@@ -295,26 +306,6 @@
 
             document.getElementById('results').style.display = 'block';
             document.getElementById('ppiValue').textContent = ppi;
-
-            let category, explanation;
-            
-            if (ppi < 150) {
-                category = "Низкая плотность (LDPI)";
-                explanation = "Пиксели заметны невооруженным глазом, текст выглядит рыхлым, изображения теряют четкость. Допустимо только для больших телевизоров от 50 дюймов, где зритель сидит далеко от экрана.";
-            } else if (ppi >= 150 && ppi < 250) {
-                category = "Средняя плотность (MDPI)";
-                explanation = "Хороший баланс для бюджетных ноутбуков и старых мониторов. На расстоянии вытянутой руки пиксели почти незаметны, но при приближении сетка видна. Для смартфона этого недостаточно.";
-            } else if (ppi >= 250 && ppi < 400) {
-                category = "Высокая плотность (Retina)";
-                explanation = "Золотой стандарт. На расстоянии 25-40 см глаз перестает различать отдельные пиксели. Отличная четкость для смартфонов, планшетов и ноутбуков. Больше - не всегда лучше, растет нагрузка на батарею.";
-            } else {
-                category = "Сверхвысокая плотность (4K+)";
-                explanation = "Пиксели настолько малы, что разница с предыдущей категорией незаметна глазу, но процессор нагружается сильнее. Практический смысл имеет только для VR-шлемов с увеличивающими линзами.";
-            }
-
-            document.getElementById('ppiDesc').textContent = "ppi (" + category + ")";
-            document.getElementById('categoryBadge').textContent = category;
-            document.getElementById('explanationText').textContent = explanation;
 
             drawVisualization(ppi);
             updateRecommendations(ppi);
