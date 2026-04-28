@@ -120,31 +120,6 @@
             color: #a0a0b0;
         }
 
-        .visual-comparison {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-
-        .pixel-block {
-            display: flex;
-            flex-wrap: wrap;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .pixel-dot {
-            width: 12px;
-            height: 12px;
-            background: white;
-            margin: 1px;
-            opacity: 0.8;
-            border-radius: 2px;
-        }
-
         .explanation-card {
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
@@ -250,30 +225,6 @@
                 <div class="ppi-label">ppi</div>
             </div>
 
-            <div class="visual-comparison">
-                <div>
-                    <small style="display:block; text-align:center; margin-bottom:5px;">Низкая плотность</small>
-                    <div class="pixel-block" id="lowDensityVis" style="width:60px;"></div>
-                </div>
-                <div style="font-size: 1.5rem; color: #f7971e;">&rarr;</div>
-                <div>
-                    <small style="display:block; text-align:center; margin-bottom:5px;">Ваш экран</small>
-                    <div class="pixel-block" id="yourDensityVis" style="width:60px;"></div>
-                </div>
-                <div style="font-size: 1.5rem; color: #f7971e;">&rarr;</div>
-                <div>
-                    <small style="display:block; text-align:center; margin-bottom:5px;">Высокая плотность</small>
-                    <div class="pixel-block" id="retinaVis" style="width:60px;"></div>
-                </div>
-            </div>
-
-            <div class="explanation-card">
-                <h3>Что такое PPI и почему это важно</h3>
-                <p>PPI (Pixels Per Inch) — это количество пикселей на дюйм экрана. Чем выше этот показатель, тем более четким и гладким выглядит изображение. При низком PPI отдельные пиксели можно заметить невооруженным глазом — текст выглядит рыхлым, а края объектов приобретают ступенчатый эффект.</p>
-                <p style="margin-top: 12px;">Это один из ключевых параметров при выборе экрана, наряду с разрешением и диагональю. Однако важно понимать: высокий PPI не всегда означает лучшее качество. Человеческий глаз имеет предел восприятия — около 300 ppi на расстоянии 30 см. Все, что выше этого порога, практически неразличимо, но требует больше ресурсов от процессора и батареи устройства.</p>
-                <p style="margin-top: 12px;">Оптимальный PPI зависит от типа устройства и расстояния, с которого вы на него смотрите. Для смартфона, который держат близко к лицу, нужно около 300-450 ppi. Для монитора на рабочем столе достаточно 100-160 ppi. Для телевизора, на который смотрят с дивана, хватит и 50-100 ppi.</p>
-            </div>
-
             <div class="recommendation-grid">
                 <div class="reco-item">
                     <span class="reco-label">Для смартфона</span>
@@ -292,6 +243,13 @@
                     <div class="reco-value" id="recoVR">-</div>
                 </div>
             </div>
+
+            <div class="explanation-card">
+                <h3>Что такое PPI и почему это важно</h3>
+                <p>PPI (Pixels Per Inch) — это количество пикселей на дюйм экрана. Чем выше этот показатель, тем более четким и гладким выглядит изображение. При низком PPI отдельные пиксели можно заметить невооруженным глазом — текст выглядит рыхлым, а края объектов приобретают ступенчатый эффект.</p>
+                <p style="margin-top: 12px;">Это один из ключевых параметров при выборе экрана, наряду с разрешением и диагональю. Однако важно понимать: высокий PPI не всегда означает лучшее качество. Человеческий глаз имеет предел восприятия — около 300 ppi на расстоянии 30 см. Все, что выше этого порога, практически неразличимо, но требует больше ресурсов от процессора и батареи устройства.</p>
+                <p style="margin-top: 12px;">Оптимальный PPI зависит от типа устройства и расстояния, с которого вы на него смотрите. Для смартфона, который держат близко к лицу, нужно около 300-450 ppi. Для монитора на рабочем столе достаточно 100-160 ppi. Для телевизора, на который смотрят с дивана, хватит и 50-100 ppi.</p>
+            </div>
         </div>
     </div>
 
@@ -307,33 +265,7 @@
             document.getElementById('results').style.display = 'block';
             document.getElementById('ppiValue').textContent = ppi;
 
-            drawVisualization(ppi);
             updateRecommendations(ppi);
-        }
-
-        function drawVisualization(ppi) {
-            const lowDensity = document.getElementById('lowDensityVis');
-            const yourDensity = document.getElementById('yourDensityVis');
-            const retina = document.getElementById('retinaVis');
-            
-            [lowDensity, yourDensity, retina].forEach(el => el.innerHTML = '');
-            
-            const createGrid = (container, cols, rows, opacity) => {
-                const dotSize = (60 / cols - 2);
-                for (let i = 0; i < rows * cols; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('pixel-dot');
-                    dot.style.width = dotSize + 'px';
-                    dot.style.height = dotSize + 'px';
-                    dot.style.opacity = opacity;
-                    container.appendChild(dot);
-                }
-            };
-
-            createGrid(lowDensity, 4, 4, 0.9);
-            const yourCols = ppi < 200 ? 6 : (ppi < 400 ? 10 : 14);
-            createGrid(yourDensity, yourCols, yourCols, 0.8);
-            createGrid(retina, 12, 12, 0.5);
         }
 
         function updateRecommendations(ppi) {
