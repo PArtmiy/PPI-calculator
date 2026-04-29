@@ -96,6 +96,10 @@
             transition: all 0.3s;
         }
 
+        input::placeholder {
+            color: rgba(255,255,255,0.25);
+        }
+
         input:focus {
             border-color: #f7971e;
             box-shadow: 0 0 20px rgba(247, 151, 30, 0.3);
@@ -227,17 +231,17 @@
             <div class="input-group">
                 <span class="label-title">Ширина</span>
                 <span class="label-unit">(пиксели)</span>
-                <input type="number" id="resWidth" placeholder="2560" value="2560">
+                <input type="number" id="resWidth" placeholder="0" value="2560">
             </div>
             <div class="input-group">
                 <span class="label-title">Высота</span>
                 <span class="label-unit">(пиксели)</span>
-                <input type="number" id="resHeight" placeholder="1440" value="1440">
+                <input type="number" id="resHeight" placeholder="0" value="1440">
             </div>
             <div class="input-group">
                 <span class="label-title">Диагональ</span>
                 <span class="label-unit">(дюймы)</span>
-                <input type="number" id="diag" placeholder="27" value="27" step="0.1">
+                <input type="number" id="diag" placeholder="0" value="27" step="0.1">
             </div>
         </div>
 
