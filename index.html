@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -209,6 +210,14 @@
             box-shadow: 0 10px 30px rgba(247, 151, 30, 0.4);
         }
 
+        .footer-credit {
+            text-align: center;
+            color: rgba(255,255,255,0.12);
+            font-size: 0.8rem;
+            margin-top: 30px;
+            letter-spacing: 2px;
+        }
+
         @media (max-width: 600px) {
             .input-grid {
                 grid-template-columns: 1fr;
@@ -291,6 +300,8 @@
                 <p style="margin-top: 12px;">Оптимальный PPI зависит от типа устройства и расстояния, с которого вы на него смотрите. Для смартфона, который держат близко к лицу, нужно около 350-500 ppi. Для монитора на рабочем столе достаточно 90-150 ppi. Для телевизора, на который смотрят с дивана, хватит и 40-100 ppi.</p>
             </div>
         </div>
+
+        <p class="footer-credit">Проект П. Артемия</p>
     </div>
 
     <script>
