@@ -291,18 +291,33 @@
 
     <script>
         function calculatePPI() {
-            const width = parseFloat(document.getElementById('resWidth').value) || 2560;
-            const height = parseFloat(document.getElementById('resHeight').value) || 1440;
-            const diagonal = parseFloat(document.getElementById('diag').value) || 27;
+            const width = parseFloat(document.getElementById('resWidth').value) || 0;
+            const height = parseFloat(document.getElementById('resHeight').value) || 0;
+            const diagonal = parseFloat(document.getElementById('diag').value) || 0;
+
+            document.getElementById('results').style.display = 'block';
+
+            if (width === 0 || height === 0 || diagonal === 0) {
+                document.getElementById('ppiValue').textContent = '—';
+                document.getElementById('analysisText').textContent = 'Введите все параметры экрана для расчета.';
+                clearRecommendations();
+                return;
+            }
 
             const diagonalPixels = Math.sqrt(width * width + height * height);
             const ppi = Math.round(diagonalPixels / diagonal);
 
-            document.getElementById('results').style.display = 'block';
             document.getElementById('ppiValue').textContent = ppi;
 
             updateRecommendations(ppi);
             updateAnalysis(ppi);
+        }
+
+        function clearRecommendations() {
+            const ids = ['recoPhone', 'recoTablet', 'recoLaptop', 'recoMonitor', 'recoTV', 'recoVR'];
+            ids.forEach(id => {
+                document.getElementById(id).textContent = '-';
+            });
         }
 
         function updateRecommendations(ppi) {
